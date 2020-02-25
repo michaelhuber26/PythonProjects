@@ -1,8 +1,7 @@
 from PicPuzzle import PicPuzzle
-import tkinter as tk 
+import tkinter as tk
 import tkinter.font
 from tkinter import messagebox
-
 
 
 WIDTH = 400
@@ -13,10 +12,9 @@ LEVEL = 4
 p = PicPuzzle(LEVEL)
 m_arr = p.getPuzzle()
 
-
-
 def main():
 
+    p.log("log.txt", str(m_arr), "w")
     # p.startConsole()
     root = tk.Tk()
     root.title("Pic Puzzle")
@@ -30,7 +28,8 @@ def main():
     frameBtns = tk.Frame(frameBG, bg='#1B2021')
     frameBtns.place(relx=0.025, rely=0.025, relwidth=0.95, relheight=0.95)
 
-    helv36 = tkinter.font.Font(family='Arial', size=int(100/LEVEL), weight='bold')
+    helv36 = tkinter.font.Font(
+        family='Arial', size=int(100/LEVEL), weight='bold')
 
     print(m_arr)
     btns = [[None for _ in range(LEVEL)] for _ in range(LEVEL)]
@@ -40,7 +39,7 @@ def main():
             btns[i][j] = tk.Button(frameBtns, text=getNum(m_arr[j][i]), bg="#EEB868", fg="#1B2021",
                                    activebackground="#FFEED6", activeforeground="#11151C",
                                    font=helv36, command=lambda i=i, j=j: btn_clicked(btns, btns[i][j]))
-            btns[i][j].place(relx=(i*1/LEVEL-0.05) + 0.05, rely=((j *1/LEVEL-0.05) + 0.05), relwidth=1/LEVEL, relheight=1/LEVEL)
+            btns[i][j].place(relx=(i*1/LEVEL-0.05) + 0.05, rely=((j * 1/LEVEL-0.05) + 0.05), relwidth=1/LEVEL, relheight=1/LEVEL)
 
     root.mainloop()
 
@@ -48,37 +47,39 @@ def main():
 def btn_clicked(btns, pressed_btn):
 
     for i in range(LEVEL*LEVEL):
-        #check num of pressed button
-        
+        # check num of pressed button
+
         if pressed_btn.cget("text") == "{0}".format(i):
             print("Button {0} pressed".format(i))
 
-            p.checkWindow(i) 
+            p.checkWindow(i)
             m_arr = p.getPuzzle()
             print(m_arr)
-           
+            p.log("log.txt", str(m_arr), "a")
+
             # rename btn names to __m_arr names ^^
-            renameBtns(btns,pressed_btn, m_arr)
-            
+            renameBtns(btns, pressed_btn, m_arr)
 
             if p.game_end == True:
-                MsgBox = tk.messagebox.askquestion(title='Game Finished', message='Restart Game With Yes, Exit with No', )
+                MsgBox = tk.messagebox.askquestion(
+                    title='Game Finished', message='Restart Game With Yes, Exit with No', )
                 if MsgBox == 'yes':
                     p.restartGame()
                     m_arr = p.getPuzzle()
                     p.checkWindow(i)
                     print(m_arr)
+                    p.log("log.txt", str(m_arr), "w")
+
                     # rename btn names to __m_arr names ^^
                     renameBtns(btns, pressed_btn, m_arr)
                 else:
                     exit()
-                     
-            
-def renameBtns(btns,pressed_btn, arr):
+
+
+def renameBtns(btns, pressed_btn, arr):
     for i in range(LEVEL):
         for j in range(LEVEL):
             btns[i][j].config(text=getNum(arr[j][i]))
-
 
 
 def getNum(x):
@@ -86,6 +87,7 @@ def getNum(x):
         return ""
     else:
         return str(x)
+
 
 if __name__ == '__main__':
     main()
