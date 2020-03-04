@@ -24,13 +24,13 @@ def main():
     xvel = 0
     yvel = HEIGHT
 
-    sn = snake(xpos, ypos, xvel, yvel)
+    sn = snake(xpos, ypos)
     food = placeFood()
 
 
     # for i in range(20):
     #     sn.addBody(sn.body[i].xpos + WIDTH,
-    #                sn.body[i].ypos, 0, 0)
+    #                sn.body[i].ypos)
 
     temp = deepcopy(sn)
 
@@ -59,7 +59,7 @@ def main():
         ## 
 
         if keys[pg.K_LSHIFT]:
-            sn.addBody(sn.body[0].xpos + WIDTH, sn.body[0].ypos, 0, 0)
+            sn.addBody(sn.body[0].xpos + WIDTH, sn.body[0].ypos)
 
         if keys[pg.K_TAB]:
             #auch der Head wird deleted ^^
@@ -94,9 +94,9 @@ def main():
             food = placeFood()
 
             for i in range(len(sn.body) - 1):
-                sn.body[i].xpos = xpos + (i*WIDTH)
-                sn.body[i].ypos = ypos
+                sn.deleteBody()
 
+            sn = snake(xpos, ypos)
             #run = False
             #  exit()
 
@@ -106,7 +106,7 @@ def main():
             if sn.body[0].xpos == food.xpos and sn.body[0].ypos == food.ypos:
                 food = placeFood()
                 sn.addBody(sn.body[0].xpos + WIDTH,
-                           sn.body[0].ypos, 0, 0)
+                           sn.body[0].ypos)
 
             if xvel != 0:
                 xpos += xvel
@@ -122,7 +122,6 @@ def main():
                 sn.body[i+1].xpos = temp.body[i].xpos
                 sn.body[i+1].ypos = temp.body[i].ypos
 
-        
        
         win.fill((0, 0, 0))
 
@@ -139,8 +138,6 @@ def main():
         
         pg.draw.rect(win, (255, 0, 0),(food.xpos, food.ypos, WIDTH, HEIGHT))
 
-       
-
         pg.display.update()
 
 
@@ -153,7 +150,7 @@ def getKeys():
 
 def placeFood():
     return game_part(random.randint(0, WIN_WIDTH / WIDTH)*WIDTH,
-                     random.randint(0, WIN_HEIGHT / HEIGHT)*HEIGHT, 0, 0)
+                     random.randint(0, WIN_HEIGHT / HEIGHT)*HEIGHT)
 
 
 if __name__ == '__main__':

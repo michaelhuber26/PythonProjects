@@ -1,9 +1,8 @@
 class game_part:
 
-    def __init__(self, xpos, ypos, xvel, yvel):
+    def __init__(self, xpos, ypos):
         self.xpos = xpos
         self.ypos = ypos
-        self.xvel = xvel
-        self.yvel = yvel
+
 
 
