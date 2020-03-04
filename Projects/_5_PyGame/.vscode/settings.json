@@ -1,0 +1,6 @@
+{
+    "python.linting.pylintArgs": [
+    "--unsafe-load-any-extension=y"
+],
+"python.linting.enabled": false
+}
