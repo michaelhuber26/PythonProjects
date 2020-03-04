@@ -1,4 +1,4 @@
-class snake_part:
+class game_part:
 
     def __init__(self, xpos, ypos, xvel, yvel):
         self.xpos = xpos
