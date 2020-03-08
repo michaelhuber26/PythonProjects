@@ -73,10 +73,10 @@ def main():
 
 def snake_game(): 
 
-    xpos = 50
-    ypos = 50
+    xpos = random.randrange(10, WIN_WIDTH - WIDTH, WIDTH)
+    ypos = random.randrange(10, WIN_HEIGHT - HEIGHT, HEIGHT)
     xvel = 0
-    yvel = HEIGHT
+    yvel = 0
 
     sn = snake(xpos, ypos)
     food = placeFood()
@@ -164,6 +164,7 @@ def snake_game():
 
             sn = snake(xpos, ypos)
             game_over = False
+            death_screen()
             #run = False
             #  exit()
 
@@ -227,6 +228,28 @@ def options():
         clock.tick(60)
 
 
+def death_screen():
+    running = True
+    while running:
+        win.fill((0, 0, 0))
+
+        draw_text('Press Enter to Respawn or Esc to Close', font, (255, 255, 255), win, int(WIN_WIDTH/4), int(WIN_HEIGHT/2) -20)
+
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                    main()
+                if event.key == pg.K_RETURN:
+                    snake_game()
+
+        pg.display.update()
+        clock.tick(60)
+
+
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -241,8 +264,8 @@ def getKeys():
 
 
 def placeFood():
-    return game_part(random.randint(WIDTH, WIN_WIDTH / WIDTH)*WIDTH - WIDTH,
-                     random.randint(HEIGHT, WIN_HEIGHT / HEIGHT )*HEIGHT - HEIGHT)
+    return game_part(random.randrange(10, WIN_WIDTH - WIDTH, WIDTH),
+                     random.randrange(10, WIN_HEIGHT - HEIGHT, HEIGHT))
 
 
 if __name__ == '__main__':
