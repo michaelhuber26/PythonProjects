@@ -14,3 +14,4 @@ class snake:
 
     def deleteBody(self):
         self.body.pop()
+
