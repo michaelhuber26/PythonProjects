@@ -1,4 +1,5 @@
 # import the necessary packages
+from CubeSide import CubeSide
 import numpy as np
 import cv2
 
@@ -17,14 +18,13 @@ boundaries = [
 ]
 
 pos = 0
-side = np.zeros(shape=(3, 3))  # emty array with 0
-side.fill(-1)  # fill with -1
-
 detectedfields = 0
+cube_side = CubeSide()
+
 
 
 #returns the name of the color
-def getColorName(color):
+def get_color_name(color):
     if(color == boundaries[0][1]):
         return "red"
     if(color == boundaries[1][1]):
@@ -39,28 +39,19 @@ def getColorName(color):
         return "white"
 
 
-def fillSideArray(color, posx, posy):
-    if(color == boundaries[0][1]):
-        side[posx][posy] = 0
-    if(color == boundaries[1][1]):
-        side[posx][posy] = 1
-    if(color == boundaries[2][1]):
-        side[posx][posy] = 2
-    if(color == boundaries[3][1]):
-        side[posx][posy] = 3
-    if(color == boundaries[4][1]):
-        side[posx][posy] = 4
-    if(color == boundaries[5][1]):
-        side[posx][posy] = 5
+def fill_cube_side(color, posx, posy):
+    global cube_side
+    color_name = get_color_name(color)
+    cube_side.set_color(posx, posy, color_name)
 
 
-def checkfields(detectedfields):
+def check_fields(detectedfields):
     if(detectedfields == 9):
         return True
     return False
     
 
-def findColorSquares(mask, imageFrame, color):
+def find_color_squares(mask, imageFrame, color):
     global detectedfields
     # Konturen finden
     cnts = cv2.findContours(mask.copy(),
@@ -77,7 +68,7 @@ def findColorSquares(mask, imageFrame, color):
             if(ar >= 0.8 and ar <= 1.2):
                 imageFrame = cv2.rectangle(
                     imageFrame, (x, y), (x + w, y + h), (255, 255, 0), 2)
-                cv2.putText(imageFrame, getColorName(color), (x+int(w/2)-20, y+int(h/2)),
+                cv2.putText(imageFrame, get_color_name(color), (x+int(w/2)-20, y+int(h/2)),
                             cv2.FONT_HERSHEY_COMPLEX,
                             0.33, (0, 0, 0))
                 
@@ -87,7 +78,7 @@ def findColorSquares(mask, imageFrame, color):
             elif(ar >= 2 * 0.8 and ar <= 2 * 1.2):
                 imageFrame = cv2.rectangle(
                     imageFrame, (x, y), (x + w, y + h), (255, 255, 0), 2)
-                cv2.putText(imageFrame, getColorName(color), (x+int(w/2)-20, y+int(h/2)),
+                cv2.putText(imageFrame, get_color_name(color), (x+int(w/2)-20, y+int(h/2)),
                             cv2.FONT_HERSHEY_COMPLEX,
                             0.33, (0, 0, 0))
 
@@ -99,6 +90,7 @@ def findColorSquares(mask, imageFrame, color):
 def main():
     while(1):
         global detectedfields
+        global cube_side
         detectedfields = 0
         
         _, imageFrame = webcam.read()
@@ -113,14 +105,12 @@ def main():
             mask = cv2.inRange(imageFrame, lower, upper)
             output = cv2.bitwise_and(imageFrame, imageFrame, mask=mask)
 
-            imageFrame = findColorSquares(mask, imageFrame, boundary[1])
+            imageFrame = find_color_squares(mask, imageFrame, boundary[1])
 
 
 
-        if ( checkfields(detectedfields) == True):
+        if ( check_fields(detectedfields) == True):
             print("All fields detected!")
-
-
 
         # detection of single biggest Area with same mask (color)
         # if len(cnts) > 0:
