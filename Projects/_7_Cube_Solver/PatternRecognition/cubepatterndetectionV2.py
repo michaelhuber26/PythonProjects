@@ -38,19 +38,16 @@ def get_color_name(color):
     if(color == boundaries[5][1]):
         return "white"
 
-
 def fill_cube_side(color, posx, posy):
     global cube_side
     color_name = get_color_name(color)
     cube_side.set_color(posx, posy, color_name)
-
 
 def check_fields(detectedfields):
     if(detectedfields == 9):
         return True
     return False
     
-
 def find_color_squares(mask, imageFrame, color):
     global detectedfields
     # Konturen finden
@@ -76,8 +73,11 @@ def find_color_squares(mask, imageFrame, color):
             
             # if 2 fields are next to each other
             elif(ar >= 2 * 0.8 and ar <= 2 * 1.2):
+                cv2.rectangle(
+                    imageFrame, (x, y), (x + int(w/2), y + h), (255, 255, 0), 2)
                 imageFrame = cv2.rectangle(
-                    imageFrame, (x, y), (x + w, y + h), (255, 255, 0), 2)
+                    imageFrame, (x + int(w/2), y), (x + w, y + h), (255, 255, 0), 2)
+                
                 cv2.putText(imageFrame, get_color_name(color), (x+int(w/2)-20, y+int(h/2)),
                             cv2.FONT_HERSHEY_COMPLEX,
                             0.33, (0, 0, 0))
@@ -109,29 +109,14 @@ def main():
 
 
 
+        # if all 9 squares are detected
         if ( check_fields(detectedfields) == True):
             print("All fields detected!")
-
-        # detection of single biggest Area with same mask (color)
-        # if len(cnts) > 0:
-        #     area_cords = max(cnts, key=cv2.contourArea)  # coordinates of rectangle
-        #     (xg, yg, wg, hg) = cv2.boundingRect(area_cords)
-        #     cv2.rectangle(output, (xg, yg), (xg+wg, yg+hg), (0, 255, 0), 2)
-
-        # output red mask
-        # lower = np.array(boundaries[0][0], dtype="uint8")
-        # upper = np.array(boundaries[0][1], dtype="uint8")
-        # mask = cv2.inRange(imageFrame, lower, upper)
-        # output = cv2.bitwise_and(imageFrame, imageFrame, mask=mask)
 
         # show the video
         cv2.imshow("images", np.hstack([imageFrame, output]))
 
         # cv2.waitKey(0)
-        if cv2.waitKey(10) & 0xFF == ord('n'):
-            pos += 1
-            if pos > 5:
-                pos = 0
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows()

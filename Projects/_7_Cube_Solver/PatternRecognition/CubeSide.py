@@ -12,14 +12,24 @@ class CubeSide:
         # yellow    3
         # orange    4
         # white     5
+        self.colors = {
+            'red': 0,
+            'blue': 1,
+            'green': 2,
+            'yellow': 3,
+            'orange': 4,
+            'white': 5
+        }
        
     # resets the colors of the side to undefind (-1)   
     def reset(self):
         self.arr.fill(-1)  # fill with -1
 
+    # prints the CubeSide array
     def print_arr(self):
         print(self.arr)
 
+    #sets array to color
     def set_color(self, posx, posy, color):
         if(color == 'red'):
             self.arr[posx][posy]= 0
@@ -32,7 +42,7 @@ class CubeSide:
         elif(color == 'orange'):
             self.arr[posx][posy]= 4
         elif(color == 'white'):
-            self.arr[posx][posy]= 5
+            self.arr[posx][posy] = 5
         else: # color not defined
             self.arr[posx][posy] = -1
     
