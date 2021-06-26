@@ -13,7 +13,7 @@ def main():
         ret, imageFrame = webcam.read()
 
         img_gray = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2GRAY)
-        ret, thresh = cv2.threshold(img_gray, 110, 255, cv2.THRESH_BINARY)
+        ret, thresh = cv2.threshold(img_gray, 65, 255, cv2.THRESH_BINARY)
 
         contours = cv2.findContours(thresh.copy(),
                                 cv2.RETR_EXTERNAL,
