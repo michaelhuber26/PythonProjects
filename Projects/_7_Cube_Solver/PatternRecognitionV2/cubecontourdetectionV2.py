@@ -1,6 +1,6 @@
 # detects the cube and draw square around it  (dark background)
 # import the necessary packages
-from PatternRecognitionV2.CubeSide import CubeSide
+from CubeSide import CubeSide
 import numpy as np
 import cv2
 
@@ -18,6 +18,10 @@ def get_graymask(imageFrame):
 
 # returns the position, size and the area of the cube (x,y,w,h,area)
 def find_cube(thresh):
+    x = 0
+    y = 0
+    w = 0
+    h = 0
     contours = cv2.findContours(
         thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )[-2]
@@ -57,7 +61,7 @@ def draw_cube_contours(imageFrame):
             cube_side.print_arr()
             saveImage = False
 
-        print("Rectpos: x: {0} | y: {1} |w: {2} | h: {3}".format(x, y, w, h))
+        # print("Rectpos: x: {0} | y: {1} |w: {2} | h: {3}".format(x, y, w, h))
         imageFrame = cv2.rectangle(imageFrame, (x, y), (x + w, y + h), (255, 255, 0), 2)
 
     return imageFrame
