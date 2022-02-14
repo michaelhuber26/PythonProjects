@@ -1,4 +1,5 @@
-from inspect import CO_NEWLOCALS
+## Takes Picture and converts it into an image made of text for the console to print
+
 import os
 import numpy as np
 import sys
